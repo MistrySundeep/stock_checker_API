@@ -1,24 +1,30 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, Request
 from fastapi.encoders import jsonable_encoder
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from app.core.model import Base
 from app.core.schema import RequestItem
-from app.core.crud import get_item_name, add_item, all_items, update_items, delete_an_item
+from app.core.crud import get_item_name, add_item, all_items, add_update_items, delete_an_item, subtract_update_items
 from app.core.db import get_db, engine
+
 
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
+templates = Jinja2Templates(directory="app/templates")
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+
+@app.get("/", response_class=HTMLResponse)
+async def home(request: Request):
+    return templates.TemplateResponse('index.html', {"request": request})
 
 
 @app.post('/insert_item')
 async def insert_item(request: RequestItem, db: Session = Depends(get_db)):
     add_item(db, request)
-
     return {'msg': 'Item added'}
 
 
@@ -35,18 +41,25 @@ async def get_all_items(db: Session = Depends(get_db)):
     results = all_items(db)
     for i in range(len(results)):
         print(results[i])
-
     return results
 
 
-@app.put('/update_item')
-async def update_item(request: RequestItem, db: Session = Depends(get_db)):
-    update_items(db, request)
+@app.put('/add_update_item')
+async def increase_item_amount(request: RequestItem, db: Session = Depends(get_db)):
+    add_update_items(db, request)
     print('Complete')
+    return {"msg": "Item updated"}
+
+
+@app.put('/subtract_update_item')
+async def decrease_item_amount(request: RequestItem, db: Session = Depends(get_db)):
+    subtract_update_items(db, request)
+    print("Complete")
+    return {"msg": "Item updated"}
 
 
 @app.delete('/delete_item')
 async def delete_item(request: RequestItem, db: Session = Depends(get_db)):
     delete_an_item(db, request)
-
+    return {"msg": "Item deleted"}
 
