@@ -6,11 +6,23 @@
 {% endblock %} 
 
 {% block content %}
-  <div class="container" style="padding-top: 100px;">
-    <div id="append_data" class="row">
+  <div class="container">
+    <table class="table table-responsive table-striped">
+      <thead style="position: sticky; top: 0;" class="table-dark">
+        <tr style="position: sticky; top: 0;">
+          <th style="position: sticky; top: 0;" scope="col">#</th>
+          <th style="position: sticky; top: 0;" scope="col">Item Name</th>
+          <th style="position: sticky; top: 0;" scope="col">Item Location</th>
+          <th style="position: sticky; top: 0;" scope="col">Item Amount</th>
+          <th style="position: sticky; top: 0;" scope="col"></th>
+        </tr>
+      </thead>
+      <tbody id="table_data">
 
-    </div>
+      </tbody>
+    </table>
   </div>
+
 
 
 
