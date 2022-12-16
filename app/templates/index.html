@@ -23,6 +23,42 @@
     </table>
   </div>
 
+  <div class="container">
+    <form class="d-flex">
+      <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#add_item_modal">Add New Item</button>
+    </form>
+  </div>
+
+  <div class="modal fade" id="add_item_modal" tabindex="-1" aria-labelledby="add_item_modal_label">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="add_item_modal_label">Add Item Form</h1>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="item_name" class="col-form-label">Item Name:</label>
+              <input type="text" class="form-control" id="item_name">
+            </div>
+            <div class="mb-3">
+              <label for="item_location" class="col-form-label">Item Location:</label>
+              <input type="text" class="form-control" id="item_location">
+            </div>
+            <div class="mb-3">
+              <label for="item_amount" class="col-form-label">Item Amount:</label>
+              <input type="text" class="form-control" id="item_amount">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button id="add_item" type="button" class="btn btn-primary">Add Item</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 
 

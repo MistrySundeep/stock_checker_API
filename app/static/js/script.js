@@ -4,13 +4,13 @@ $(document).ready(function (){
             $('tbody').append(
                 $('<tr/>', {'id': 'item'+i}).append(
                     $('<td/>', {'text': i+1})
-                ).append($('<td/>', {'text': data[i].item_name}))
-                .append($('<td/>', {'text': data[i].item_location}))
-                .append($('<td/>', {'text': data[i].item_amount}))
+                ).append($('<td/>', {'id': 'name', 'text': data[i].item_name}))
+                .append($('<td/>', {'id': 'location', 'text': data[i].item_location}))
+                .append($('<td/>', {'id': 'amount', 'text': data[i].item_amount}))
                 .append(
                     $('<td/>', {'style': 'text-align: center;'}).append(
                         $('<button/>', {'id': 'adj'+i ,'class': 'btn btn-primary', 'text': 'Adjust Amount'})
-                        ).append($('<button/>', {'id': 'del'+i ,'class': 'btn btn-danger', 'text': 'Delete Item', 'style': 'margin-left: 5px;'})
+                        ).append($('<button/>', {'id': 'del' ,'class': 'btn btn-danger', 'text': 'Delete Item', 'style': 'margin-left: 5px;'})
                     )
                 )
             )
@@ -18,17 +18,39 @@ $(document).ready(function (){
     });
 });
 
-$(document).on('click', 'button', function (){
-//    list of rows in the table
-    let row_list = $('tbody').children();
-//    ids of the button clicked
+$(document).on('click', '#del', function (){
+//  ids of the button clicked
     let del_id = $(this).parent().parent().attr('id');
-    console.log(del_id);
-    console.log(row_list)
-//    prints last character of the string
-    console.log(del_id[del_id.length - 1])
+//  get the item name and create a json object to send into delete request
+    let name = $('tr#'+del_id).find('td#name').text();
+
+    let json_object = new Object();
+    json_object.name = name;
+
+    console.log(json_object)
+
+    $.ajax({
+        url: 'http://127.0.0.1:8000/delete_item',
+        method: 'DELETE',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(json_object),
+        success: function(data) {
+            console.log(data)
+            $('tr#'+del_id).remove()
+        },
+        error: function(data) {
+            console.log(data)
+        }
+    });
+
 });
 
 
+$(document).on('click', '#add_item', function (){
+    console.log('Hello World');
+    create a json obj to hold the necessary data
+    get the data from the form and add it to the json obj
 
-
+    post the object to the api
+})
