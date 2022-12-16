@@ -48,9 +48,33 @@ $(document).on('click', '#del', function (){
 
 
 $(document).on('click', '#add_item', function (){
-    console.log('Hello World');
-    create a json obj to hold the necessary data
-    get the data from the form and add it to the json obj
+//    get the data from the form and add it to the json obj
+    let name = $('#item_name').val();
+    let location = $('#item_location').val();
+    let amount = $('#item_amount').val();
 
-    post the object to the api
-})
+//    create a json obj to hold the necessary data
+    let json_object = new Object();
+    json_object.name = name;
+    json_object.location = location;
+    json_object.amount = amount;
+
+    console.log(json_object);
+
+    $.ajax({
+        url: 'http://127.0.0.1:8000/insert_item',
+        method: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(json_object),
+        success: function(data){
+            console.log(data);
+            setInterval('refreshPage()', 1000);
+        }
+    })
+
+});
+
+function refreshPage() {
+    location.reload(true);
+}
