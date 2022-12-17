@@ -9,7 +9,7 @@ $(document).ready(function (){
                 .append($('<td/>', {'id': 'amount', 'text': data[i].item_amount}))
                 .append(
                     $('<td/>', {'style': 'text-align: center;'}).append(
-                        $('<button/>', {'id': 'adj'+i ,'class': 'btn btn-primary', 'text': 'Adjust Amount'})
+                        $('<button/>', {'id': 'adj' ,'class': 'btn btn-primary', 'text': 'Adjust Amount', 'type': 'button', 'data-bs-toggle': 'modal', 'data-bs-target': '#adjust_item_modal'})
                         ).append($('<button/>', {'id': 'del' ,'class': 'btn btn-danger', 'text': 'Delete Item', 'style': 'margin-left: 5px;'})
                     )
                 )
@@ -69,7 +69,7 @@ $(document).on('click', '#add_item', function (){
         data: JSON.stringify(json_object),
         success: function(data){
             console.log(data);
-            setInterval('refreshPage()', 1000);
+            setInterval('refreshPage()', 10);
         }
     })
 
@@ -78,3 +78,27 @@ $(document).on('click', '#add_item', function (){
 function refreshPage() {
     location.reload(true);
 }
+
+function getCurrentAmount() {
+    $(document).on('click', '#adj', function(){
+        let data_list = $(this).parent().parent().children();
+        let item = data_list[3];
+        let tmp_amount = $(item).text();
+
+        let current_amount = Number(tmp_amount)
+        console.log(current_amount);
+        return current_amount;
+    });
+}
+
+
+$(document).on('click', '#adjust_item_btn', function(){
+//  get the amount to update the current amount of the item
+    let modal_list = $(this).parent().parent().children();
+    let modal_item = modal_list[1];
+    let updated_amount = $(modal_item).find('input').val();
+
+    let current_amount = getCurrentAmount();
+    console.log(current_amount);
+
+});
