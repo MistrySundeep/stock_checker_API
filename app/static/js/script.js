@@ -70,7 +70,7 @@ $(document).on('click', '#add_item', function (){
         data: JSON.stringify(new_item),
         success: function(data){
             console.log(data);
-            setInterval('refreshPage()', 10);
+            setInterval('refreshPage()', 100);
         }
     })
 
@@ -111,7 +111,7 @@ myModalEl.addEventListener('show.bs.modal', event => {
             data: JSON.stringify(updated_data),
             success: function(data){
                 console.log(data)
-                setInterval('refreshPage()', 10);
+                setInterval('refreshPage()', 100);
             }
         })
     })
