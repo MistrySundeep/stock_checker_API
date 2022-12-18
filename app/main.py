@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from app.core.model import Base
 from app.core.schema import RequestItem
-from app.core.crud import get_item_name, add_item, all_items, add_update_items, delete_an_item, subtract_update_items
+from app.core.crud import get_item_name, add_item, all_items, update_amount, delete_an_item
 from app.core.db import get_db, engine
 
 
@@ -44,17 +44,10 @@ async def get_all_items(db: Session = Depends(get_db)):
     return results
 
 
-@app.put('/add_update_item')
-async def increase_item_amount(request: RequestItem, db: Session = Depends(get_db)):
-    add_update_items(db, request)
+@app.put('/update_item_amount')
+async def update_item_amount(request: RequestItem, db: Session = Depends(get_db)):
+    update_amount(db, request)
     print('Complete')
-    return {"msg": "Item updated"}
-
-
-@app.put('/subtract_update_item')
-async def decrease_item_amount(request: RequestItem, db: Session = Depends(get_db)):
-    subtract_update_items(db, request)
-    print("Complete")
     return {"msg": "Item updated"}
 
 

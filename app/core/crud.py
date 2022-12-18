@@ -27,26 +27,17 @@ def all_items(db: Session):
     return results
 
 
-def add_update_items(db: Session, request: RequestItem):
+def update_amount(db: Session, request: RequestItem):
     if db.query(model.Item).filter(model.Item.item_name == request.name):
         print('ITEM ALREADY EXISTS')
-        db.query(model.Item).filter(model.Item.item_name == request.name).update({'item_amount': model.Item.item_amount + request.amount})
-        db.commit()
-        print('ITEM UPDATED')
-    else:
-        print('ITEM DOES NOT EXIST')
+        current_item = db.query(model.Item).filter(model.Item.item_name == request.name).first()
+        print(f'Current amount: {current_item.item_amount}')
 
-
-def subtract_update_items(db: Session, request: RequestItem):
-    if db.query(model.Item).filter(model.Item.item_name == request.name):
-        print('ITEM ALREADY EXISTS')
-        current_amount = db.query(model.Item).filter(model.Item.item_name == request.name).first()
-        print(current_amount.item_amount)
-        if current_amount.item_amount != 0:
-            db.query(model.Item).filter(model.Item.item_name == request.name).update({'item_amount': model.Item.item_amount - request.amount})
+        if current_item.item_amount != 0:
+            db.query(model.Item).filter(model.Item.item_name == request.name).update({'item_amount': request.amount})
             db.commit()
         else:
-            print('Not possible')
+            print('Not Possible')
 
 
 def delete_an_item(db: Session, request: RequestItem):
