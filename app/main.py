@@ -1,8 +1,9 @@
-from fastapi import FastAPI, Depends, HTTPException, status, Request
+from fastapi import FastAPI, Depends, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
+
 from sqlalchemy.orm import Session
 from app.core.model import Base
 from app.core.schema import RequestItem
@@ -28,7 +29,7 @@ async def insert_item(request: RequestItem, db: Session = Depends(get_db)):
     return {'msg': 'Item added'}
 
 
-@app.get("/get_item/{item_name}")
+@app.get('/get_item/{item_name}')
 async def find_item(item_name: str, db: Session = Depends(get_db)):
     results = get_item_name(db, item_name)
     results_dict = {"item_id": results.item_id, "item_name": results.item_name, "item_amount": results.item_amount, "item_location": results.item_location}
@@ -36,7 +37,7 @@ async def find_item(item_name: str, db: Session = Depends(get_db)):
     return jsonable_encoder(results_dict)
 
 
-@app.get("/show_all_items")
+@app.get('/show_all_items')
 async def get_all_items(db: Session = Depends(get_db)):
     results = all_items(db)
     for i in range(len(results)):
@@ -55,4 +56,3 @@ async def update_item_amount(request: RequestItem, db: Session = Depends(get_db)
 async def delete_item(request: RequestItem, db: Session = Depends(get_db)):
     delete_an_item(db, request)
     return {"msg": "Item deleted"}
-
