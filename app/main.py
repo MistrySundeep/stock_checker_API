@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI, Depends, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.templating import Jinja2Templates
@@ -5,17 +7,17 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
 from sqlalchemy.orm import Session
-from app.core.model import Base
-from app.core.schema import RequestItem
-from app.core.crud import get_item_name, add_item, all_items, update_amount, delete_an_item
-from app.core.db import get_db, engine
+from core.model import Base
+from core.schema import RequestItem
+from core.crud import get_item_name, add_item, all_items, update_amount, delete_an_item
+from core.db import get_db, engine
 
 
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
-templates = Jinja2Templates(directory="app/templates")
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
+templates = Jinja2Templates(directory=os.path.abspath(os.path.expanduser('templates')))
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 @app.get("/", response_class=HTMLResponse)
